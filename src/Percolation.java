@@ -3,7 +3,7 @@ public class Percolation {
 	boolean isOpen;
 	int objectNumber;
 	Percolation[][] grid;
-	QuickFindUF uf;
+	WeightedQuickUnionUF uf;
 	
 	public Percolation()
 	{
@@ -104,7 +104,7 @@ public class Percolation {
 		// Instantiate a new Percolation grid
 		Percolation objectGrid = new Percolation(N);
 		//Instantiate a new QuickFind Object
-		objectGrid.uf = new QuickFindUF((N * N));
+		objectGrid.uf = new WeightedQuickUnionUF((N * N));
 
 		// While the grid does not Percolate I keep opening squares and check for adjacent squares that are open
 		while (!objectGrid.percolates())
