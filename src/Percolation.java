@@ -115,57 +115,20 @@ public class Percolation {
 			objectGrid.grid[i][j].isOpen = true;
 			
 			/*  After the random square is open, I check the squares above, below, left and right, to the current open one.
-			 	If any of those squares are open as well, I call the union command to join the components
-			 	If a square on the boundary of the grid is open, I can only check the inner squares or else I get array
-			 	out of bounds error, so that is why my first four if statements check if i or j is at 0, or 9. 
+			 	If any of those squares are open as well, I call the union command to join the components 
 			 	
 			 	So if two adjacent squares are open I call union and print out which components where joined in union. 
 			*/
-			// These if statement are specially target for sites that are on the border like when i=0 or 9, and j = 0, or 9
-			if (i ==0 && j ==0) {
-				objectGrid.checkLeft(i, j);
-				objectGrid.checkBottom(i, j);
-			}
-			else if (i ==(N-1) && j ==0) {
-				objectGrid.checkTop(i, j);
-				objectGrid.checkLeft(i, j);
-			}
-			else if (i == 0 && j == (N-1)) {
-				objectGrid.checkRight(i, j);
-				objectGrid.checkBottom(i, j);
-			}
-			else if (i == (N-1) && j == (N-1)) {
-				objectGrid.checkTop(i, j);
-				objectGrid.checkRight(i, j);
-			}
-			
-			else if (i ==0) {
-				objectGrid.checkLeft(i, j);
-				objectGrid.checkRight(i, j);
-				objectGrid.checkBottom(i, j);
-			} else if (i == (N-1)) {
-				objectGrid.checkLeft(i, j);
-				objectGrid.checkRight(i, j);
-				objectGrid.checkTop(i, j);
-			} else if (j ==0) {
-				objectGrid.checkTop(i, j);
-				objectGrid.checkBottom(i, j);
-				objectGrid.checkLeft(i, j);
-			} else if ( j==(N-1)) {
-				objectGrid.checkTop(i, j);
-				objectGrid.checkBottom(i, j);
-				objectGrid.checkRight(i, j);
-			} // These if statements are for non border sites
-			else 
-			{
-				objectGrid.checkLeft(i, j);
-				objectGrid.checkRight(i, j);
-				objectGrid.checkBottom(i, j);
-				objectGrid.checkTop(i, j);
-			}
-			
-		}
 		
+			try {
+			objectGrid.checkLeft(i, j);
+			objectGrid.checkRight(i, j);
+			objectGrid.checkBottom(i, j);
+			objectGrid.checkTop(i, j);
+			} catch (IndexOutOfBoundsException e) {
+				//continue
+			}
+		}
 		// When the system finally percolates, I print out how many individual components are left from the original 100
 		System.out.println("The remaining components is: " + objectGrid.uf.count());
 		System.out.println("");
