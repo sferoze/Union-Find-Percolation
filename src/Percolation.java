@@ -65,7 +65,6 @@ public class Percolation {
 	
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		// N is the size of the grid N x N
 		int N = 10;
@@ -92,7 +91,7 @@ public class Percolation {
 			 	
 			 	So if two adjacent squares are open I call union and print out which components where joined in union. 
 			*/
-			
+			// These if statement are specially target for sites that are on the border like when i=0 or 9, and j = 0, or 9
 			if (i ==0) {
 				if (objectGrid.grid[i+1][j].isOpen) {
 					objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i+1][j].objectNumber);
@@ -113,7 +112,7 @@ public class Percolation {
 					objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i][j - 1].objectNumber);
 					StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i][j -1].objectNumber);
 				}
-			}
+			} // These if statements are for non border sites
 			else if (objectGrid.grid[i+1][j].isOpen)
 			{
 				objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i+1][j].objectNumber);
