@@ -63,6 +63,36 @@ public class Percolation {
 		return percolate;
 	}
 	
+	void checkBottom(int i, int j)
+	{
+		if (this.grid[i+1][j].isOpen) {
+			this.uf.union(this.grid[i][j].objectNumber, this.grid[i+1][j].objectNumber);
+			StdOut.println(this.grid[i][j].objectNumber + " " + this.grid[i+1][j].objectNumber);
+		}
+	}
+	void checkTop(int i, int j)
+	{
+		if (this.grid[i-1][j].isOpen) {
+			this.uf.union(this.grid[i][j].objectNumber, this.grid[i-1][j].objectNumber);
+			StdOut.println(this.grid[i][j].objectNumber + " " + this.grid[i-1][j].objectNumber);
+		}
+	}
+	void checkLeft(int i, int j)
+	{
+		if (this.grid[i][j + 1].isOpen) {
+			this.uf.union(this.grid[i][j].objectNumber, this.grid[i][j + 1].objectNumber);
+			StdOut.println(this.grid[i][j].objectNumber + " " + this.grid[i][j + 1].objectNumber);
+		}
+		
+	}
+	void checkRight(int i, int j)
+	{
+		if (this.grid[i][j - 1].isOpen) {
+			this.uf.union(this.grid[i][j].objectNumber, this.grid[i][j - 1].objectNumber);
+			StdOut.println(this.grid[i][j].objectNumber + " " + this.grid[i][j - 1].objectNumber);
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 		
@@ -92,42 +122,47 @@ public class Percolation {
 			 	So if two adjacent squares are open I call union and print out which components where joined in union. 
 			*/
 			// These if statement are specially target for sites that are on the border like when i=0 or 9, and j = 0, or 9
-			if (i ==0) {
-				if (objectGrid.grid[i+1][j].isOpen) {
-					objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i+1][j].objectNumber);
-					StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i+1][j].objectNumber);
-				}
-			} else if (i == 9) {
-				if(objectGrid.grid[i-1][j].isOpen) {
-					objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i-1][j].objectNumber);
-					StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i-1][j].objectNumber);
-				}
-			} else if (j ==0) {
-				if (objectGrid.grid[i][j + 1].isOpen) {
-					objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i][j + 1].objectNumber);
-					StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i][j + 1].objectNumber);
-				}
-			} else if ( j==9) {
-				if (objectGrid.grid[i][j - 1].isOpen) {
-					objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i][j - 1].objectNumber);
-					StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i][j -1].objectNumber);
-				}
-			} // These if statements are for non border sites
-			else if (objectGrid.grid[i+1][j].isOpen)
-			{
-				objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i+1][j].objectNumber);
-				StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i+1][j].objectNumber);
-			} else if(objectGrid.grid[i-1][j].isOpen) {
-				objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i-1][j].objectNumber);
-				StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i-1][j].objectNumber);
-			} else if (objectGrid.grid[i][j + 1].isOpen) {
-				objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i][j + 1].objectNumber);
-				StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i][j + 1].objectNumber);
-			} else if (objectGrid.grid[i][j - 1].isOpen) {
-				objectGrid.uf.union(objectGrid.grid[i][j].objectNumber, objectGrid.grid[i][j - 1].objectNumber);
-				StdOut.println(objectGrid.grid[i][j].objectNumber + " " + objectGrid.grid[i][j -1].objectNumber);
+			if (i ==0 && j ==0) {
+				objectGrid.checkLeft(i, j);
+				objectGrid.checkBottom(i, j);
+			}
+			else if (i ==(N-1) && j ==0) {
+				objectGrid.checkTop(i, j);
+				objectGrid.checkLeft(i, j);
+			}
+			else if (i == 0 && j == (N-1)) {
+				objectGrid.checkRight(i, j);
+				objectGrid.checkBottom(i, j);
+			}
+			else if (i == (N-1) && j == (N-1)) {
+				objectGrid.checkTop(i, j);
+				objectGrid.checkRight(i, j);
 			}
 			
+			else if (i ==0) {
+				objectGrid.checkLeft(i, j);
+				objectGrid.checkRight(i, j);
+				objectGrid.checkBottom(i, j);
+			} else if (i == (N-1)) {
+				objectGrid.checkLeft(i, j);
+				objectGrid.checkRight(i, j);
+				objectGrid.checkTop(i, j);
+			} else if (j ==0) {
+				objectGrid.checkTop(i, j);
+				objectGrid.checkBottom(i, j);
+				objectGrid.checkLeft(i, j);
+			} else if ( j==(N-1)) {
+				objectGrid.checkTop(i, j);
+				objectGrid.checkBottom(i, j);
+				objectGrid.checkRight(i, j);
+			} // These if statements are for non border sites
+			else 
+			{
+				objectGrid.checkLeft(i, j);
+				objectGrid.checkRight(i, j);
+				objectGrid.checkBottom(i, j);
+				objectGrid.checkTop(i, j);
+			}
 			
 		}
 		
