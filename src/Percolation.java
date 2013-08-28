@@ -49,6 +49,7 @@ public class Percolation {
 	
 	public boolean percolates()
 	{
+		// Check to see if any of the top row components are connected with the bottom row components. If so the systems percolates.
 		boolean percolate = false;
 		for (int i = 0; i < 10; i++)
 		{
