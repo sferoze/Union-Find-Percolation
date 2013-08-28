@@ -47,14 +47,14 @@ public class Percolation {
 			return true;
 	}
 	
-	public boolean percolates()
+	public boolean percolates(int n)
 	{
 		// Check to see if any of the top row components are connected with the bottom row components. If so the systems percolates.
 		boolean percolate = false;
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < n; i++)
 		{
-			for (int j = 0; j < 10; j++) {
-				if (this.uf.connected(this.grid[0][i].objectNumber, this.grid[9][j].objectNumber))
+			for (int j = 0; j < n; j++) {
+				if (this.uf.connected(this.grid[0][i].objectNumber, this.grid[n-1][j].objectNumber))
 					percolate = true;
 			}
 			
@@ -93,13 +93,13 @@ public class Percolation {
 		}
 	}
 	
-	
 	public static void main(String[] args) {
 		
 		// N is the size of the grid N x N
-		int N = 10;
+		int N = 20;
 		int Max = N-1;
 		int Min = 0;
+		int siteOpenCount = 0;
 		
 		// Instantiate a new Percolation grid
 		Percolation objectGrid = new Percolation(N);
@@ -107,12 +107,15 @@ public class Percolation {
 		objectGrid.uf = new WeightedQuickUnionUF((N * N));
 
 		// While the grid does not Percolate I keep opening squares and check for adjacent squares that are open
-		while (!objectGrid.percolates())
+		while (!objectGrid.percolates(N))
 		{
 			// First I open a random square in the grid
 			int i = Min + (int)(Math.random() * ((Max - Min) + 1));
 			int j = Min + (int)(Math.random() * ((Max - Min) + 1));
-			objectGrid.grid[i][j].isOpen = true;
+			
+			if (objectGrid.grid[i][j].isOpen != true) {
+				objectGrid.grid[i][j].isOpen = true;
+				siteOpenCount++;
 			
 			/*  After the random square is open, I check the squares above, below, left and right, to the current open one.
 			 	If any of those squares are open as well, I call the union command to join the components 
@@ -120,18 +123,41 @@ public class Percolation {
 			 	So if two adjacent squares are open I call union and print out which components where joined in union. 
 			*/
 		
-			try {
-			objectGrid.checkLeft(i, j);
-			objectGrid.checkRight(i, j);
-			objectGrid.checkBottom(i, j);
-			objectGrid.checkTop(i, j);
-			} catch (IndexOutOfBoundsException e) {
-				//continue
+				try {
+					objectGrid.checkTop(i, j);
+					} catch (IndexOutOfBoundsException e) {
+					//continue
+					}
+				try {
+					objectGrid.checkBottom(i, j);
+					} catch (IndexOutOfBoundsException e) {
+						//continue
+					}
+				try {
+					objectGrid.checkLeft(i, j);
+					} catch (IndexOutOfBoundsException e) {
+						//continue
+					}
+				try {
+					objectGrid.checkRight(i, j);
+					} catch (IndexOutOfBoundsException e) {
+						//continue
+					}
 			}
 		}
 		// When the system finally percolates, I print out how many individual components are left from the original 100
 		System.out.println("The remaining components is: " + objectGrid.uf.count());
+		System.out.println("Number of open sites: " + siteOpenCount);
 		System.out.println("");
+		
+		
+	/*	JFrame window = new JFrame();
+		window.setSize(500, 500);
+		window.setVisible(true);
+	*/	
+		@SuppressWarnings("unused")
+		Sites frame = new Sites("Percolation", objectGrid, N);
+
 		
 		// Prints out a visual of the final grid that percolates
 		for (int i=0; i < N; i++){
