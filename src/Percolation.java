@@ -2,7 +2,7 @@ public class Percolation {
 	
 	Spot[][] grid;
 	WeightedQuickUnionUF uf;
-	int siteOpenCount;
+	double siteOpenCount;
 	
 	public Percolation()
 	{
@@ -48,15 +48,12 @@ public class Percolation {
 	public boolean percolates(int n)
 	{
 		// Check to see if any of the top row components are connected with the bottom row components. If so the systems percolates.
+	
 		boolean percolate = false;
-		for (int i = 0; i < n; i++)
-		{
-			for (int j = 0; j < n; j++) {
-				if (this.uf.connected(this.grid[0][i].objectNumber, this.grid[n-1][j].objectNumber))
-					percolate = true;
-			}
-			
+		if (this.uf.connected((n*n), ((n*n)+1))) {
+			percolate = true;
 		}
+		
 		return percolate;
 	}
 	
@@ -102,8 +99,21 @@ public class Percolation {
 				//Keep track of how many sites have been open
 				objectGrid.siteOpenCount = 0;
 				//Instantiate a new QuickFind Object
-				objectGrid.uf = new WeightedQuickUnionUF((N * N));
-
+				objectGrid.uf = new WeightedQuickUnionUF((N * N) + 2);
+				
+				// Create two virtual sites and connect them to the top and bottom row elements. The system percolates when the two virtual sites are connected
+				Spot virtualsite1 = new Spot();
+				virtualsite1.objectNumber = (N*N);
+				virtualsite1.isOpen = true;
+				Spot virtualsite2 = new Spot();
+				virtualsite2.objectNumber = (N*N) + 1;
+				virtualsite2.isOpen = true;
+				
+				for (int i=0; i < N; i++) {
+					objectGrid.uf.union(virtualsite1.objectNumber, objectGrid.grid[0][i].objectNumber);
+					objectGrid.uf.union(virtualsite2.objectNumber, objectGrid.grid[N-1][i].objectNumber);
+				}
+				
 				// While the grid does not Percolate I keep opening squares and check for adjacent squares that are open
 				while (!objectGrid.percolates(N))
 				{
@@ -144,7 +154,7 @@ public class Percolation {
 					}
 				}
 				
-				StdOut.println("Number of open sites: " + objectGrid.siteOpenCount);
+				//StdOut.println("Number of open sites: " + objectGrid.siteOpenCount);
 				
 				return objectGrid;
 	}
