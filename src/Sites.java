@@ -33,7 +33,7 @@ public void paint(Graphics g) {
 	
         for (int i=0; i < ncount; i++){
 			for (int j =0; j < ncount; j++) {
-				if (objectGrid.grid[i][j].isOpen) {
+				if (objectGrid.isOpen(i, j)) {
 					g.setColor(Color.blue);
 					g.fillRect(x, y, 20, 20);
 					x += 21;
