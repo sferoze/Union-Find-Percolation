@@ -52,7 +52,15 @@ public class Percolation {
 	
 	public void open(int i, int j)
 	{
-		this.grid[i][j].isOpen = true;
+			i = i-1;
+			j = j-1;
+		
+		try {
+			this.grid[i][j].isOpen = true;
+			} catch (IndexOutOfBoundsException e) {
+			//continue
+			}
+		
 		
 		try {
 			this.checkTop(i, j);
@@ -78,6 +86,9 @@ public class Percolation {
 	
 	public boolean isOpen(int i, int j)
 	{
+		i = i-1;
+		j = j-1;
+		
 		if (this.grid[i][j].isOpen)
 			return true;
 		else
@@ -86,12 +97,23 @@ public class Percolation {
 	
 	public boolean isFull(int i, int j)
 	{
+		i = i-1;
+		j= j-1;
+		
 		// I am really confused about the requirements of this method. It is not supposed to be the inverse of isOpen
+		/*
 		if (this.grid[i][j].isOpen)
 			return true;
 		else
 			return false;
-		 
+		 */
+		if (!this.grid[i][j].isOpen)
+			return false;
+		
+		if (this.uf.connected((virtualsite1.objectNumber), this.grid[i][j].objectNumber)) {
+			return true;
+		} else
+			return false;
 		
 	}
 	
@@ -171,7 +193,7 @@ public class Percolation {
     
 	
 	public static void main(String[] args) {
-		
+	/*	
 		int N= 20;
 		
 		Percolation objectGrid = new Percolation(N);
@@ -197,5 +219,17 @@ public class Percolation {
 			System.out.println("");
 		}
 		
+		
+		int N= 20;
+		
+		Percolation objectGrid = new Percolation(N);
+		objectGrid.open(1, 5);
+		objectGrid.open(2, 5);
+		objectGrid.open(3, 5);
+		objectGrid.open(4, 5);
+		objectGrid.open(5, 5);
+		StdOut.println(objectGrid.isFull(5,5));
+		*/
 	}
+	
 }
